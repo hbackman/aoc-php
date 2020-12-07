@@ -3,29 +3,21 @@
 
 define('ROOT', dirname(__DIR__));
 
-function getInput (string $filename) {
-  $filepath = sprintf('%s/input/%s', ROOT, $filename);
-
-  if ( ! file_exists($filepath) ) {
-    echo "Input file not found at: ".$filepath;
-    exit -1;
-  }
-  return file_get_contents($filepath);
-}
+include ROOT . '/app/helpers.php';
 
 spl_autoload_register(function ($class) {
-    $filename = str_replace('\\', DIRECTORY_SEPARATOR, $class);
-    $filename = sprintf('%s/%s.php', ROOT, $filename);
+	$filename = str_replace('\\', DIRECTORY_SEPARATOR, $class);
+	$filename = sprintf('%s/%s.php', ROOT, $filename);
 
-    if (file_exists($filename)) {
-        include_once $filename;
-    }
+	if (file_exists($filename)) {
+		include_once $filename;
+	}
 });
 
 if ( ! isset($argv[1]) || ! isset($argv[2]) ) {
-    echo "Usage: run <day> <part>";
-    echo PHP_EOL;
-    exit -1;
+  echo "Usage: run <day> <part>";
+  echo PHP_EOL;
+  exit -1;
 }
 
 $day = $argv[1] < 10 ? "0$argv[1]" : $argv[1];
@@ -35,3 +27,4 @@ $class = "\App\Y2020\Day$day";
 $method = $par;
 
 echo $class::$method(getInput("day$day.txt"));
+echo PHP_EOL;
